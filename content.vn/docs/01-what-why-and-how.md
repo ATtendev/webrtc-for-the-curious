@@ -1,10 +1,10 @@
 ---
-title: Cái gì, Tại sao và Cách nào
+title: WebRTC: Định nghĩa, Lợi ích và Quy trình hoạt động
 type: docs
 weight: 2
 ---
 
-# Cái gì, Tại sao và Cách nào
+# WebRTC: Cái gì, Tại sao, và Làm thế nào
 
 ## WebRTC là gì?
 
@@ -19,16 +19,15 @@ Giao thức WebRTC được phát triển bởi IETF có thể được tìm th�
 ## Tại sao bạn nên học WebRTC?
 
 Một vài lời ích mà WebRTC mang lại:
-(Xin phép không dịch lại những thuật ngữ này vì không tìm được từ thay thế)
 
-* Open standard
-* Multiple implementations
-* Available in browsers
-* Mandatory encryption
+* Tiêu chuẩn mở
+* Nhiều triển khai
+* Sẵn có trên trình duyệt
+* Bắt buộc mã hóa
 * NAT Traversal
-* Repurposed existing technology
-* Congestion control
-* Sub-second latency
+* Tái sử dụng công nghệ hiện tại
+* Kiểm soát quá tải
+* Độ trễ dưới một giây
 
 Danh sách này không phải là đầy đủ, chỉ là một ví dụ về một số điều bạn có thể đánh giá trong hành trình của mình. Đừng lo lắng nếu bạn chưa biết tất cả những thuật ngữ này, cuốn sách này sẽ giúp bạn hiểu chúng dần dần qua quá trình học.
 
@@ -36,10 +35,10 @@ Danh sách này không phải là đầy đủ, chỉ là một ví dụ về m�
 
 Giao thức WebRTC là một chủ đề lớn nó cần một quyển sách dày để giải thích. Tuy nhiên chúng ta có thể bắt đầu bằng việc chia ra làm 4 bước:
 
-1. Signaling (tín hiệu)
-2. Connecting (kết nối)
-3. Securing (bảo mật)
-4. Communicating (giao tiếp)
+1. Tín hiệu (Signaling)
+2. Kết nối (Connecting)
+3. Bảo mật (Securing)
+4. Giao tiếp (Communicating)
 
 Các bước sẽ được thực hiện theo thứ tự, nghĩa là các bước phải thành công 100% để bắt đầu bước tiếp theo.
 
@@ -65,9 +64,9 @@ Quan trọng cần lưu ý rằng signaling xảy ra "bên ngoài", nghĩa là �
 
 Khi mà hai đối tượng sử dụng WebRTC có trao đổi SDPs, họ phải có đủ thông tin để thử kết nối với nhau. Để tạo được sự kết nối này, WebRTC sử dụng công nghệ khác để khởi tạo được gọi là ICE (Interactive Connectivity Establishment).
 
-ICE là một giao thức cái mà trước khi kết nối WebRTC và cho phép khởi tạo kết nối trực tiếp giữa hai đối tượng sử dụng mà không đến server trung gian. Ở đây hai đối tượng có thể sử dụng chung mạng hoặc không.
+ICE là một giao thức giúp thiết lập kết nối trực tiếp giữa hai đối tượng sử dụng mà không cần đến server trung gian, cho phép họ kết nối trực tiếp qua cùng một mạng hoặc qua các mạng khác nhau.
 
-ICE cho phép kết nối trực tiếp, nhưng phần thú vị thực sự của quá trình kết nối liên quan đến một khái niệm gọi là 'NAT Traversal' và sử dụng các máy chủ STUN/TURN. Hai khái niệm này, mà chúng ta sẽ khám phá sâu hơn sau này, là tất cả những gì bạn cần để giao tiếp với một đối tượng ICE ở trong một subnet khác.
+Mặc dùICE cho phép kết nối trực tiếp, nhưng phần thú vị thực sự của quá trình kết nối liên quan đến một khái niệm gọi là 'NAT Traversal' và sử dụng các máy chủ STUN/TURN. Hai khái niệm này, mà chúng ta sẽ khám phá sâu hơn sau này, là tất cả những gì bạn cần để giao tiếp với một đối tượng ICE ở trong một subnet khác.
 
 Khi hai đối tượng tạo thành công kết nối ICE, WebRTC sẽ chuyển sang bước tiếp theo đó là thiết lập bảo mật để chia sẻ audio, video và data giữa chúng.
 
@@ -75,21 +74,21 @@ Khi hai đối tượng tạo thành công kết nối ICE, WebRTC sẽ chuyển
 
 Khi tạo kết nối ICE thành công chúng ta có thể giao tiếp hai chiều thông qua ICE, chính vì thế chúng ta cần bảo mật việc giao tiếp này. Điều này được thực hiện với 2 giao thức đã có trước WebRTC; DTLS (Datagram Transport Layer Security) và SRTP (Secure Real-Time Transport Protocol). Giao thức đầu tiên, DTLS, đơn giản là TLS qua UDP (TLS là giao thức mật mã được sử dụng để bảo vệ giao tiếp qua HTTPS). Giao thức thứ hai, SRTP, được sử dụng để đảm bảo mã hóa của RTP (Real-time Transport Protocol) các gói dữ liệu.
 
-Đầu tiền, WebRTC được kết nối bằng cách thực hiện bắt tay DTLS thông qua kết nối được thiết lập bởi ICE. Không giống như HTTPS, WebRTC không sử dụng một cơ chế tập trung để xác nhận. Nó đơn giản khẳng định rằng chứng chỉ được trao đổi qua DTLS phải khớp với fingerprint được chia sẻ qua tín hiệu. Kết nối DTLS này sau đó được sử dụng cho các thông điệp DataChannel. 
+Đầu tiên, WebRTC kết nối bằng cách thực hiện quá trình bắt tay DTLS thông qua kết nối được thiết lập bởi ICE. Khác với HTTPS, WebRTC không sử dụng một cơ chế tập trung để xác nhận. Thay vào đó, nó đơn giản xác nhận rằng chứng chỉ được trao đổi qua DTLS phải khớp với fingerprint được chia sẻ qua tín hiệu. Kết nối DTLS sau đó được sử dụng cho các thông điệp DataChannel. 
 
-Tiếp theo, WebRTC sử dụng giao thức RTP, được bảo mật bởi SRTP, cho việc trao đổi audio/video. Chúng ta khởi tạo một phiên làm việc SRTP bằng cách trích xuất keys từ thỏa thuận của phiên làm việc DTLS.
+Tiếp theo, WebRTC sử dụng giao thức RTP, được bảo mật bởi SRTP, cho việc trao đổi audio/video. Chúng ta khởi tạo một phiên làm việc SRTP bằng cách trích xuất các khóa từ thỏa thuận của phiên làm việc DTLS.
 
-Chúng ta sẽ thảo luận việc tại sao media và dữ liệu được trao đổi bằng các phương thức riêng ở chương sau, ở đây chúng ta có thể thấy các thông tin này được xử lý riêng biệt.
+Chúng ta sẽ thảo luận về lý do tại sao phương tiện và dữ liệu được trao đổi thông qua các phương tiện riêng biệt trong các chương sau, nơi chúng ta có thể thấy rằng các thông tin này được xử lý độc lập.
 
-Phần việc cơ bản đã hoàn thành! Chúng ta đã thành công trong việc thiết lập giao tiếp hai chiều và an toàn. Nếu bạn có một kết nối ổn định giữa các đối tượng WebRTC của mình, thì đây là những thứ bạn cần. Trong phần tiếp theo, chúng ta sẽ thảo luận về cách WebRTC xử lý các vấn đề bất cập của việc mất dữ liệu và băng thông.
+Phần cơ bản của quá trình đã được hoàn tất! Chúng ta đã thành công trong việc thiết lập giao tiếp hai chiều và đảm bảo tính an toàn. Nếu bạn có một kết nối ổn định giữa các đối tượng WebRTC của mình, đây là những yếu tố quan trọng. Trong phần tiếp theo, chúng ta sẽ thảo luận về cách WebRTC giải quyết các vấn đề về mất dữ liệu và băng thông.
 
 ### Giao tiếp giữa các đối tượng thông qua RTP và SCTP
 
 Giả sử chúng ta có hai đối tượng WebRTC đã kết nối và bảo mật, kết nối hai chiều được thiết lập và đã bắt đầu trao đổi thông tin. Như ở trên, WebRTC sẽ sử dụng hai giao thức đã có sẵn: RTP (Real-time Transport Protocol), and SCTP (Stream Control Transmission Protocol). Chúng ta sử dụng RTP để trao đổi media đã được mã hóa với SRTP, và chúng ta sử dụng SCTP để gửi và nhận thông điệp DataChannel đã được mã hóa với DTLS.
 
-RTP là một giao thức đơn giản, nhưng nó cung đủ tính năng để triển khai real-time streaming. Điều quan trọng với RTP đó là nó cho phép người phát triển có thể kiếm soát được độ trễ, sự mất mát và việc tắc nghẽn của các gói tin. Chúng ta sẽ thảo luận ở chương tiếp theo chương nói về media.
+RTP là một giao thức đơn giản, nhưng nó đủ mạnh mẽ để triển khai luồng truyền thời gian thực. Điểm quan trọng với RTP là khả năng của nó để người phát triển kiểm soát độ trễ, mức độ mất mát, và vấn đề tắc nghẽn của các gói tin. Chúng ta sẽ thảo luận chi tiết về media trong chương tiếp theo.
 
-Giao thức cuối cùng chúng ta đề cập trong chương này là SCTP. Điều quan trọng với SCTP đó là việc bạn có thể tắt bật bảo mật và thứ tự tin nhắn (có nhiều tính năng khác). Nó cho phép người phát triển đảm bảo độ trễ trong sự cho phép của một hệ thống real-time.
+Giao thức cuối cùng mà chúng ta xem xét trong chương này là SCTP. Điều quan trọng với SCTP là khả năng tắt mở tính năng bảo mật và xác định thứ tự tin nhắn (cùng với nhiều tính năng khác). Nó cung cấp cho người phát triển khả năng đảm bảo độ trễ trong một hệ thống thời gian thực.
 
 ## WebRTC, tổng hợp của các giao thức
 
